@@ -199,8 +199,18 @@ Ok(())
 
 pub fn repay(ctx:Context<Repay>,amount:u64)->Result<()>{
     let user=&mut ctx.accounts.user_account;
+    let borrowed_val:u64;
+    match ctx.accounts.mint.to_account_info().key(){
+        key if key==user.usdc_address=>{
+            borrowed_val=user.borrowed_usdc;
+        },
+        _=>{
+            borrowed_val=user.borrowed_sol;
+        }
+    }
+    let time_diff=user.last_updated_borrow-Clock::get()?.unix_timestamp;
     let bank=&mut ctx.accounts.bank;
-    
+    banl.total_borrowed=(bank.total_borrowed as f64 * E.powf(bank.interest_rate as f64 * time_diff as f64)) as u64;
 
     Ok(())
 }
@@ -440,6 +450,7 @@ pub borrowed_usdc:u64,
 pub borrowed_usdc_shares:u64,
 pub usdc_address:Pubkey,
 pub last_updated:i64,
+pub last_updated_borrow:i64,
 }
 
 #[error_code]
