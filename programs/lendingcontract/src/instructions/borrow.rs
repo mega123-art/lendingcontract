@@ -111,6 +111,9 @@ match ctx.accounts.mint.to_account_info().key(){
         user.borrowed_sol_shares+=user_borrow_shares;
     }
 }
+user.last_updated_borrow=Clock::get()?.unix_timestamp;
+bank.total_borrowed+=amount;
+bank.total_borrowed_shares+=user_borrow_shares;
 Ok(())
 }
 fn calculate_accured_interest(deposited:u64,interest_rate:u64,last_updated:i64)->Result<u64>{
