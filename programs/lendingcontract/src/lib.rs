@@ -11,10 +11,8 @@ declare_id!("A9ALyfnt8LrVCz2uvhHnqHQFA3k5dUq7dAJxXo1Dikdy");
 
 #[program]
 pub mod lending {
-   
+   use super::*;
 
-
-    use super::*;
 
    pub fn initialize_bank(
         ctx: Context<InitializeBank>,
