@@ -56,7 +56,7 @@ let timediff=user.last_updated-Clock::get()?.unix_timestamp;
 let bank=&mut ctx.accounts.bank;
 bank.total_deposits=(bank.total_deposits as f64 * E.powf(bank.interest_rate as f64 *timediff as f64)) as u64;
 let val_per_share=bank.total_deposits as f64/bank.total_deposits_shares as f64;
-let user_value:f64=deposited_val as f64/ val_per_share;
+let user_value:f64=deposited_val as f64* val_per_share;
 if user_value<amount as f64{
     return Err(Lendingerror::InsufficientFunds.into());
 }

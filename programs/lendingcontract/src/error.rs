@@ -8,4 +8,10 @@ pub enum Lendingerror{
     OverBorrowableAmount,
     #[msg("Over Repay Amount!!!")]
     OverRepay,
+    #[msg("Health Factor is above 1, liquidation not required!")]
+    HealthFactorAboveOne,
+    #[msg("Math Overflow")]
+    MathOverflow,
+    #[msg("Insufficient Balance")]
+    InsufficientBalance,
 }
