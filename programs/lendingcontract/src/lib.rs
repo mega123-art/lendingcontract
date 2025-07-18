@@ -10,7 +10,7 @@ mod constants;
 declare_id!("A9ALyfnt8LrVCz2uvhHnqHQFA3k5dUq7dAJxXo1Dikdy");
 
 #[program]
-pub mod lendingcontract {
+pub mod lending {
    
 
 
