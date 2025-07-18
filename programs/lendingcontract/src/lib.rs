@@ -17,7 +17,7 @@ pub mod lending {
     use super::*;
 
     pub fn initializebank(ctx: Context<InitializeBank>,liquidation_threshold:u64,max_ltv:u64) -> Result<()> {
-        instructions::initbank(ctx, liquidation_threshold, max_ltv)
+        instructions::initbank(ctx, liquidation_threshold, max_ltv, None, None, None, None, None)
     }
     pub fn initializeuser(ctx:Context<InitializeUser>,usdc_address:Pubkey)->Result<()>{
        instructions::inituser(ctx, usdc_address)
