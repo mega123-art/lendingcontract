@@ -10,3 +10,6 @@ pub use repay::*;
 pub mod repay;
 pub use liquidate::*;
 pub mod liquidate;
+
+pub use flashloan::*;
+pub mod flashloan;

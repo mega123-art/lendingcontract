@@ -44,7 +44,17 @@ pub usdc_address:Pubkey,
 pub last_updated:i64,
 pub last_updated_borrow:i64,
 }
-
+#[account]
+#[derive(InitSpace)]
+pub struct FlashLoan {
+    pub borrower: Pubkey,
+    pub bank: Pubkey,
+    pub mint: Pubkey,
+    pub amount: u64,
+    pub fee: u64,
+    pub is_active: bool,
+    pub created_at: i64,
+}
 const BASIS_POINTS: u64 = 10000;
 const SECONDS_PER_YEAR: u64 = 365 * 24 * 60 * 60;
 
@@ -118,7 +128,14 @@ impl Bank {
             self.last_updated = current_time;
         }
         
+        
         Ok(())
+    }
+
+    pub fn calculate_flash_loan_fee(&self, amount: u64) -> u64 {
+        // Flash loan fee: 0.09% (9 basis points)
+        const FLASH_LOAN_FEE_BASIS_POINTS: u64 = 9;
+        amount * FLASH_LOAN_FEE_BASIS_POINTS / BASIS_POINTS
     }
 }
 

@@ -82,6 +82,15 @@ pub mod lending {
     pub fn update_price(ctx: Context<UpdatePrice>) -> Result<()> {
         instructions::update_price(ctx)
     }
+    pub fn initiate_flash_loan(
+        ctx: Context<InitiateFlashLoan>,
+        amount: u64,
+    ) -> Result<()> {
+        instructions::initiate_flash_loan(ctx, amount)
+    }
+    pub fn repay_flash_loan(ctx: Context<RepayFlashLoan>) -> Result<()> {
+        instructions::repay_flash_loan(ctx)
+    }
 }
 
 
