@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface};
+use anchor_spl::{token::TransferChecked, token_interface::{Mint, TokenAccount, TokenInterface}};
 use crate::state::*;
 
 #[derive(Accounts)]
@@ -39,7 +39,7 @@ pub struct InitiateFlashLoan<'info> {
         token::authority = borrower,
     )]
     pub borrower_token_account: InterfaceAccount<'info, TokenAccount>,
-    
+    pub associated_token_program: Program<'info, AssociatedToken>,
     pub token_program: Interface<'info, TokenInterface>,
     pub system_program: Program<'info, System>,
 }
@@ -84,6 +84,8 @@ pub struct RepayFlashLoan<'info> {
     pub borrower_token_account: InterfaceAccount<'info, TokenAccount>,
     
     pub token_program: Interface<'info, TokenInterface>,
+    pub associated_token_program: Program<'info, AssociatedToken>,
+    pub system_program: Program<'info, System>,
 }
 pub fn initiate_flash_loan(
     ctx: Context<InitiateFlashLoan>,
@@ -113,23 +115,25 @@ pub fn initiate_flash_loan(
     flash_loan.created_at = Clock::get()?.unix_timestamp;
     
     // Transfer tokens from bank treasury to borrower account
-    let bank_seeds = &[
-        mint_key.as_ref(),
-        &[ctx.bumps.bank]
+    // Using the same pattern as your borrow function
+    let transfer_cpi_acc = TransferChecked {
+        from: ctx.accounts.bank_token_account.to_account_info(),
+        to: ctx.accounts.borrower_token_account.to_account_info(),
+        authority: ctx.accounts.bank_token_account.to_account_info(),
+        mint: ctx.accounts.mint.to_account_info(),
+    };
+    
+    let cpi_program = ctx.accounts.token_program.to_account_info();
+    let signer_seeds: &[&[&[u8]]] = &[
+        &[
+            b"treasury",
+            mint_key.as_ref(),
+            &[ctx.bumps.bank_token_account],
+        ]
     ];
-    let bank_signer_seeds = &[&bank_seeds[..]];
-    
-    let transfer_ctx = CpiContext::new_with_signer(
-        ctx.accounts.token_program.to_account_info(),
-        Transfer {
-            from: ctx.accounts.bank_token_account.to_account_info(),
-            to: ctx.accounts.borrower_token_account.to_account_info(),
-            authority: ctx.accounts.bank.to_account_info(),
-        },
-        bank_signer_seeds,
-    );
-    
-    token_interface::transfer(transfer_ctx, amount)?;
+    let cpi_ctx = CpiContext::new(cpi_program, transfer_cpi_acc).with_signer(signer_seeds);
+    let decimals = ctx.accounts.mint.decimals;
+    token_interface::transfer_checked(cpi_ctx, amount, decimals)?;
     
     msg!("Flash loan initiated: {} tokens to {}", amount, ctx.accounts.borrower.key());
     msg!("Fee: {} tokens", fee);
@@ -151,7 +155,7 @@ pub fn repay_flash_loan(ctx: Context<RepayFlashLoan>) -> Result<()> {
     let bank = &mut ctx.accounts.bank;
     let flash_loan = &ctx.accounts.flash_loan;
     
-    
+    // Check that flash loan is within same transaction (security measure)
     let current_time = Clock::get()?.unix_timestamp;
     require!(
         current_time == flash_loan.created_at,
@@ -167,16 +171,18 @@ pub fn repay_flash_loan(ctx: Context<RepayFlashLoan>) -> Result<()> {
     );
     
     // Transfer repayment from borrower to bank treasury
-    let transfer_ctx = CpiContext::new(
-        ctx.accounts.token_program.to_account_info(),
-        Transfer {
-            from: ctx.accounts.borrower_token_account.to_account_info(),
-            to: ctx.accounts.bank_token_account.to_account_info(),
-            authority: ctx.accounts.borrower.to_account_info(),
-        },
-    );
+    // Using TransferChecked like in your borrow function
+    let transfer_cpi_acc = TransferChecked {
+        from: ctx.accounts.borrower_token_account.to_account_info(),
+        to: ctx.accounts.bank_token_account.to_account_info(),
+        authority: ctx.accounts.borrower.to_account_info(),
+        mint: ctx.accounts.mint.to_account_info(),
+    };
     
-    token_interface::transfer(transfer_ctx, total_repayment)?;
+    let cpi_program = ctx.accounts.token_program.to_account_info();
+    let cpi_ctx = CpiContext::new(cpi_program, transfer_cpi_acc);
+    let decimals = ctx.accounts.mint.decimals;
+    token_interface::transfer_checked(cpi_ctx, total_repayment, decimals)?;
     
     // Update bank's total deposits with the fee earned
     bank.total_deposits = bank.total_deposits.checked_add(flash_loan.fee).unwrap();
