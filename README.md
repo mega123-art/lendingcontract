@@ -2,4 +2,4 @@
 
 # features ramining
 ## DAO governance ongoing
-## Cross chain in futurs
+## Cross chain in future
