@@ -1,5 +1,4 @@
 use std::f64::consts::E;
-
 use anchor_lang::prelude::*;
 use anchor_spl::{associated_token::AssociatedToken, token_interface::{self, Mint, TokenAccount, TokenInterface, TransferChecked}};
 use pyth_solana_receiver_sdk::price_update::{get_feed_id_from_hex, PriceUpdateV2};
@@ -7,47 +6,41 @@ use pyth_solana_receiver_sdk::price_update::{get_feed_id_from_hex, PriceUpdateV2
 use crate::{constants::{MAX_AGE, SOL_USD_FEED_ID, USDC_USD_FEED_ID}, error::Lendingerror, state::{calculate_accrued_interest, Bank, User}};
 
 #[derive(Accounts)]
-pub struct Borrow<'info>{
+pub struct Borrow<'info> {
     #[account(mut)]
-    pub signer:Signer<'info>,
-    pub mint:InterfaceAccount<'info,Mint>,
+    pub signer: Signer<'info>,
+    pub mint: InterfaceAccount<'info, Mint>,
     #[account(
         mut,
         seeds=[mint.key().as_ref()],
         bump,
     )]
-    pub bank:Account<'info,Bank>,
+    pub bank: Account<'info, Bank>,
     #[account(
-    mut,
-seeds=[b"treasury",
-mint.key().as_ref(),
-],
-bump,
-)]
-pub bank_token_account:InterfaceAccount<'info,TokenAccount>,
-#[account(
-    mut,
-    seeds=[signer.key().as_ref()],
-    bump,
-)]
-pub user_account:Account<'info,User>,
-#[account(
-    init_if_needed,
-    payer=signer,
-    associated_token::mint=mint,
-    associated_token::authority=signer,
-    associated_token::token_program=token_program,
-)]
-pub user_token_account:InterfaceAccount<'info,TokenAccount>,
-pub token_program:Interface<'info,TokenInterface>,
-pub associated_token_program:Program<'info,AssociatedToken>,
-pub system_program:Program<'info,System>,
-pub price_update:Account<'info,PriceUpdateV2>,
-
+        mut,
+        seeds=[b"treasury", mint.key().as_ref()],
+        bump,
+    )]
+    pub bank_token_account: InterfaceAccount<'info, TokenAccount>,
+    #[account(
+        mut,
+        seeds=[signer.key().as_ref()],
+        bump,
+    )]
+    pub user_account: Account<'info, User>,
+    #[account(
+        init_if_needed,
+        payer=signer,
+        associated_token::mint=mint,
+        associated_token::authority=signer,
+        associated_token::token_program=token_program,
+    )]
+    pub user_token_account: InterfaceAccount<'info, TokenAccount>,
+    pub token_program: Interface<'info, TokenInterface>,
+    pub associated_token_program: Program<'info, AssociatedToken>,
+    pub system_program: Program<'info, System>,
+    pub price_update: Account<'info, PriceUpdateV2>,
 }
-
-
-
 
 pub fn borrow(ctx: Context<Borrow>, amount: u64) -> Result<()> {
     let bank = &mut ctx.accounts.bank;
@@ -60,16 +53,24 @@ pub fn borrow(ctx: Context<Borrow>, amount: u64) -> Result<()> {
     let total_collateral: u64;
     match ctx.accounts.mint.to_account_info().key() {
         key if key == user.usdc_address => {
-            let sol_feed_id = get_feed_id_from_hex(SOL_USD_FEED_ID)?;
-            let sol_price = price_update.get_price_no_older_than(&Clock::get()?, MAX_AGE, &sol_feed_id)?;
+            let sol_feed_id = get_feed_id_from_hex(SOL_USD_FEED_ID)
+                .map_err(|_| Lendingerror::OracleError)?;
+                
+            let sol_price = price_update.get_price_no_older_than(&Clock::get()?, MAX_AGE, &sol_feed_id)
+                .map_err(|_| Lendingerror::OracleError)?;
+                
             let new_value = calculate_accrued_interest(user.deposited_usdc, bank.current_supply_rate, user.last_updated)?;
-            total_collateral = sol_price.price as u64 * new_value;
+            total_collateral = (sol_price.price as u64) * new_value;
         }
         _ => {
-            let usdc_feed_id = get_feed_id_from_hex(USDC_USD_FEED_ID)?;
-            let usdc_price = price_update.get_price_no_older_than(&Clock::get()?, MAX_AGE, &usdc_feed_id)?;
+            let usdc_feed_id = get_feed_id_from_hex(USDC_USD_FEED_ID)
+                .map_err(|_| Lendingerror::OracleError)?;
+                
+            let usdc_price = price_update.get_price_no_older_than(&Clock::get()?, MAX_AGE, &usdc_feed_id)
+                .map_err(|_| Lendingerror::OracleError)?;
+                
             let new_value = calculate_accrued_interest(user.deposited_sol, bank.current_supply_rate, user.last_updated)?;
-            total_collateral = new_value * usdc_price.price as u64;
+            total_collateral = new_value * (usdc_price.price as u64);
         }
     }
 
@@ -123,11 +124,3 @@ pub fn borrow(ctx: Context<Borrow>, amount: u64) -> Result<()> {
     
     Ok(())
 }
-
-
-// pub fn calculate_accured_interest(deposited:u64,interest_rate:u64,last_updated:i64)->Result<u64>{
-//     let current_time=Clock::get()?.unix_timestamp;
-//     let time_diff=current_time-last_updated;
-//     let new_value=(deposited as f64*E.powf(interest_rate as f64*time_diff as f64)) as u64;
-//     Ok(new_value)
-// }

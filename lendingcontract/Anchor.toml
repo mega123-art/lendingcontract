@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-lendingcontract = "A9ALyfnt8LrVCz2uvhHnqHQFA3k5dUq7dAJxXo1Dikdy"
+lendingcontract = "FTN8aQVXUsxCnWfoYT3jZ99XEA1oE7pPsbZ6nZpRBtDd"
 
 [registry]
 url = "https://api.apr.dev"
@@ -16,4 +16,4 @@ cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
-test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 \"tests/**/*.ts\""

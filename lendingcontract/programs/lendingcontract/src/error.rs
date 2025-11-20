@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 
 #[error_code]
-pub enum Lendingerror{
+pub enum Lendingerror {
     #[msg("Insufficient Funds available!!!")]
     InsufficientFunds,
     #[msg("Over Borrowable Amount!!!")]
@@ -14,4 +14,6 @@ pub enum Lendingerror{
     MathOverflow,
     #[msg("Insufficient Balance")]
     InsufficientBalance,
+    #[msg("Oracle Price Error")] // Add this line
+    OracleError,
 }
