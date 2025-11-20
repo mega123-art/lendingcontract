@@ -19,3 +19,5 @@ pub mod update_interest;
 
 pub use update_price::*;
 pub mod update_price;
+pub use governance::*;
+pub mod governance;

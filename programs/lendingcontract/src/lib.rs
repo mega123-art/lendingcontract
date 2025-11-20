@@ -6,13 +6,11 @@ mod instructions;
 mod error;
 mod constants;
 
-
-declare_id!("FTN8aQVXUsxCnWfoYT3jZ99XEA1oE7pPsbZ6nZpRBtDd");
+declare_id!("A9ALyfnt8LrVCz2uvhHnqHQFA3k5dUq7dAJxXo1Dikdy");
 
 #[program]
 pub mod lending {
    use super::*;
-
 
    pub fn initialize_bank(
         ctx: Context<InitializeBank>,
@@ -35,12 +33,16 @@ pub mod lending {
             reserve_factor,
         )
     }
+
+    pub fn transfer_authority(ctx: Context<TransferAuthority>) -> Result<()> {
+        instructions::transfer_authority(ctx)
+    }
+
     pub fn initialize_user(ctx: Context<InitializeUser>, usdc_address: Pubkey) -> Result<()> {
         instructions::inituser(ctx, usdc_address)
     }
     pub fn depositmain(ctx:Context<Deposit>,amount:u64)->Result<()>{
         instructions::deposit(ctx, amount)
-        
     }
 
     pub fn withdraw(ctx:Context<Withdraw>,amount:u64)->Result<()>{
@@ -91,18 +93,23 @@ pub mod lending {
     pub fn repay_flash_loan(ctx: Context<RepayFlashLoan>) -> Result<()> {
         instructions::repay_flash_loan(ctx)
     }
+
+    // Governance Instructions
+    pub fn create_proposal(
+        ctx: Context<CreateProposal>, 
+        proposal_id: u64, 
+        proposal_type: u8, 
+        p1: u64, p2: u64, p3: u64, p4: u64, p5: u64, 
+        duration: i64
+    ) -> Result<()> {
+        instructions::create_proposal(ctx, proposal_id, proposal_type, p1, p2, p3, p4, p5, duration)
+    }
+
+    pub fn vote(ctx: Context<Vote>, vote_for: bool) -> Result<()> {
+        instructions::cast_vote(ctx, vote_for)
+    }
+
+    pub fn execute_proposal(ctx: Context<ExecuteProposal>) -> Result<()> {
+        instructions::execute_proposal(ctx)
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
