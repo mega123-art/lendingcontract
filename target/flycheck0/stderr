@@ -3617,3 +3617,187 @@ Stack backtrace:
              at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panic.rs:359:14
   21: std::rt::lang_start_internal::{{closure}}
              at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/rt.rs:175:24
+  22: std::panicking::catch_unwind::do_call
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panicking.rs:589:40
+  23: std::panicking::catch_unwind
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panicking.rs:552:19
+  24: std::panic::catch_unwind
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panic.rs:359:14
+  25: std::rt::lang_start_internal
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/rt.rs:171:5
+  26: main
+  27: __libc_start_call_main
+             at ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+  28: __libc_start_main_impl
+             at ./csu/../csu/libc-start.c:360:3
+  29: <unknown>
+   0.149025458s  INFO prepare_target{force=false package_id=thiserror v1.0.69 target="thiserror"}: cargo::core::compiler::fingerprint: fingerprint error for thiserror v1.0.69/Check { test: false }/TargetInner { ..: lib_target("thiserror", ["lib"], "/home/parth/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/thiserror-1.0.69/src/lib.rs", Edition2021) }
+   0.149052980s  INFO prepare_target{force=false package_id=thiserror v1.0.69 target="thiserror"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/parth/lendingcontract/target/debug/.fingerprint/thiserror-74de863af020fc17/lib-thiserror`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: cargo::core::compiler::compile
+   6: cargo::core::compiler::compile
+   7: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   8: cargo::ops::cargo_compile::compile_ws
+   9: cargo::ops::cargo_compile::compile_with_exec
+  10: cargo::ops::cargo_compile::compile
+  11: cargo::commands::check::exec
+  12: <cargo::cli::Exec>::exec
+  13: cargo::main
+  14: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  15: std::rt::lang_start::<()>::{closure#0}
+  16: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/core/src/ops/function.rs:284:21
+  17: std::panicking::catch_unwind::do_call
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panicking.rs:589:40
+  18: std::panicking::catch_unwind
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panicking.rs:552:19
+  19: std::panic::catch_unwind
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panic.rs:359:14
+  20: std::rt::lang_start_internal::{{closure}}
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/rt.rs:175:24
+  21: std::panicking::catch_unwind::do_call
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panicking.rs:589:40
+  22: std::panicking::catch_unwind
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panicking.rs:552:19
+  23: std::panic::catch_unwind
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panic.rs:359:14
+  24: std::rt::lang_start_internal
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/rt.rs:171:5
+  25: main
+  26: __libc_start_call_main
+             at ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+  27: __libc_start_main_impl
+             at ./csu/../csu/libc-start.c:360:3
+  28: <unknown>
+   0.149362379s  INFO prepare_target{force=false package_id=lendingcontract v0.1.0 (/home/parth/lendingcontract/programs/lendingcontract) target="lendingcontract"}: cargo::core::compiler::fingerprint: fingerprint error for lendingcontract v0.1.0 (/home/parth/lendingcontract/programs/lendingcontract)/Check { test: true }/TargetInner { ..: lib_target("lendingcontract", ["cdylib", "lib"], "/home/parth/lendingcontract/programs/lendingcontract/src/lib.rs", Edition2021) }
+   0.149383453s  INFO prepare_target{force=false package_id=lendingcontract v0.1.0 (/home/parth/lendingcontract/programs/lendingcontract) target="lendingcontract"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/parth/lendingcontract/target/debug/.fingerprint/lendingcontract-ccc1bee0b56ceb4a/test-lib-lendingcontract`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: cargo_util::paths::read_bytes
+   1: cargo_util::paths::read
+   2: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   3: cargo::core::compiler::fingerprint::prepare_target
+   4: cargo::core::compiler::compile
+   5: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   6: cargo::ops::cargo_compile::compile_ws
+   7: cargo::ops::cargo_compile::compile_with_exec
+   8: cargo::ops::cargo_compile::compile
+   9: cargo::commands::check::exec
+  10: <cargo::cli::Exec>::exec
+  11: cargo::main
+  12: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  13: std::rt::lang_start::<()>::{closure#0}
+  14: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/core/src/ops/function.rs:284:21
+  15: std::panicking::catch_unwind::do_call
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panicking.rs:589:40
+  16: std::panicking::catch_unwind
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panicking.rs:552:19
+  17: std::panic::catch_unwind
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panic.rs:359:14
+  18: std::rt::lang_start_internal::{{closure}}
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/rt.rs:175:24
+  19: std::panicking::catch_unwind::do_call
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panicking.rs:589:40
+  20: std::panicking::catch_unwind
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panicking.rs:552:19
+  21: std::panic::catch_unwind
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/panic.rs:359:14
+  22: std::rt::lang_start_internal
+             at /rustc/29483883eed69d5fb4db01964cdf2af4d86e9cb2/library/std/src/rt.rs:171:5
+  23: main
+  24: __libc_start_call_main
+             at ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+  25: __libc_start_main_impl
+             at ./csu/../csu/libc-start.c:360:3
+  26: <unknown>
+    Checking cfg-if v1.0.4
+    Checking five8_core v0.1.2
+    Checking once_cell v1.21.3
+    Checking serde_core v1.0.228
+    Checking typenum v1.19.0
+    Checking zerocopy v0.8.27
+    Checking cpufeatures v0.2.17
+    Checking solana-sanitize v2.2.1
+    Checking solana-atomic-u64 v2.2.1
+    Checking num-traits v0.2.19
+    Checking bytemuck v1.24.0
+    Checking subtle v2.6.1
+    Checking zeroize v1.8.2
+    Checking rand_core v0.6.4
+    Checking borsh v1.5.7
+    Checking memchr v2.7.6
+    Checking itoa v1.0.15
+    Checking ryu v1.0.20
+    Checking five8 v0.2.1
+    Checking five8_const v0.1.4
+    Checking solana-msg v2.2.1
+    Checking solana-program-memory v2.3.1
+    Checking bitflags v2.10.0
+    Checking log v0.4.28
+    Checking lazy_static v1.5.0
+    Checking solana-define-syscall v2.3.0
+    Checking base64 v0.22.1
+    Checking thiserror v1.0.69
+    Checking base64 v0.21.7
+    Checking solana-program-option v2.2.1
+    Checking generic-array v0.14.7
+    Checking solana-decode-error v2.3.0
+    Checking block-buffer v0.10.4
+    Checking crypto-common v0.1.7
+    Checking digest v0.10.7
+    Checking sha2 v0.10.9
+    Checking curve25519-dalek v4.1.3
+    Checking ahash v0.8.12
+    Checking hashbrown v0.13.2
+    Checking serde v1.0.228
+    Checking serde_json v1.0.145
+    Checking serde_bytes v0.11.19
+    Checking borsh v0.10.4
+    Checking solana-hash v2.3.0
+    Checking bincode v1.3.3
+    Checking bv v0.11.1
+    Checking solana-fee-calculator v2.2.1
+    Checking solana-sha256-hasher v2.3.0
+    Checking solana-pubkey v2.4.0
+    Checking solana-sdk-ids v2.2.1
+    Checking solana-instruction v2.3.3
+    Checking solana-sysvar-id v2.2.1
+    Checking solana-feature-gate-interface v2.2.2
+    Checking solana-clock v2.2.2
+    Checking solana-rent v2.2.1
+    Checking solana-slot-hashes v2.2.1
+    Checking solana-last-restart-slot v2.2.1
+    Checking solana-epoch-rewards v2.2.1
+    Checking solana-epoch-schedule v2.2.1
+    Checking solana-program-error v2.2.2
+    Checking solana-system-interface v1.0.0
+    Checking solana-serialize-utils v2.2.1
+    Checking solana-stable-layout v2.2.1
+    Checking solana-account-info v2.3.0
+    Checking solana-program-pack v2.2.1
+    Checking solana-slot-history v2.2.1
+    Checking solana-cpi v2.2.1
+    Checking solana-program-entrypoint v2.3.0
+    Checking solana-instructions-sysvar v2.2.2
+    Checking solana-stake-interface v1.2.1
+    Checking solana-loader-v3-interface v3.0.0
+    Checking solana-invoke v0.4.0
+    Checking solana-sysvar v2.3.0
+    Checking anchor-lang v0.32.1
+    Checking lendingcontract v0.1.0 (/home/parth/lendingcontract/programs/lendingcontract)
+error: could not compile `lendingcontract` (lib) due to 60 previous errors; 3 warnings emitted
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `lendingcontract` (lib test) due to 60 previous errors; 3 warnings emitted
