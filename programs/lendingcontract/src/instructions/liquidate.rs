@@ -1,4 +1,3 @@
-use std::f64::consts::E;
 use crate::{error::Lendingerror, state::*};
 use crate::{constants::{MAX_AGE, SOL_USD_FEED_ID, USDC_USD_FEED_ID}};
 use anchor_lang::prelude::*;

@@ -13,3 +13,9 @@ pub mod liquidate;
 
 pub use flashloan::*;
 pub mod flashloan;
+pub use update_interest::*;
+pub mod update_interest;
+
+
+pub use update_price::*;
+pub mod update_price;
